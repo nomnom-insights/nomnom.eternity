@@ -160,3 +160,11 @@ Just like in Ring, middlewares can be combined:
 
 - [ ] *Maybe* remove direct dependency on `at-at` and use the Scheduled ThreadPool Executor directly
 - [ ] More middlewares
+
+# Authors
+
+<sup>In alphabetical order</sup>
+
+- [Afonso Tsukamoto](https://github.com/AfonsoTsukamoto)
+- [Łukasz Korecki](https://github.com/lukaszkorecki)
+- [Marketa Adamova](https://github.com/MarketaAdamova)

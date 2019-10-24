@@ -1,5 +1,9 @@
 # Eternity
 
+[![Clojars Project](https://img.shields.io/clojars/v/nomnom/eternity.svg)](https://clojars.org/nomnom/eternity)
+
+[![CircleCI](https://circleci.com/gh/nomnom-insights/nomnom.eternity.svg?style=svg)](https://circleci.com/gh/nomnom-insights/nomnom.eternity)
+
 <img src="https://i.annihil.us/u/prod/marvel//universe3zx/images/c/c5/Eternitystand.jpg" align=right heigth="250px" >
 
 

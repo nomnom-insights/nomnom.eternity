@@ -2,6 +2,10 @@
   :description "Scheduled function execution, as a Component. With optional error reporting and and lock support."
   :min-lein-version "2.5.0"
   :url "https://github.com/nomnom-insights/nomnom.eternity"
+  :deploy-repositories {"clojars" {:sign-releases false
+                                   :username [:gpg :env/clojars_username]
+                                   :password [:gpg :env/clojars_password]}}
+
   :license {:name "MIT License"
             :url "https://opensource.org/licenses/MIT"
             :year 2018

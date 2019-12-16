@@ -7,7 +7,7 @@
 <img src="https://i.annihil.us/u/prod/marvel//universe3zx/images/c/c5/Eternitystand.jpg" align=right heigth="250px" >
 
 
-Library for scheduling jobs which is suitable to be used in component systems. Wrapper around [at-at](https://github.com/overtone/at-at) which is a wrapper around `java.util.concurrent.ScheduledThreadPoolExecutor`
+A [Component](https://github.com/stuartsierra/component) for scheduling jobs which is suitable to be used in component systems. Wrapper around [at-at](https://github.com/overtone/at-at) which is a wrapper around `java.util.concurrent.ScheduledThreadPoolExecutor`
 
 ## Description
 
@@ -18,7 +18,7 @@ There are two components that you will need to setup in your system:
 
 The scheduled job component:
   - requires the scheduler pool as a dependency, by default it uses the `:scheduler-pool` key
-  - supported config options:
+  - supports the following config options:
      - `name`: just to keep track of things
      - `frequency`: how often should scheduler run the function, can be specified in ms (100) or as date string "1m"/"2h"
      - `delay` (optional): used for fine-grained control of when to run the *first time*, can either be specifed in ms (1000) or as time string specifying when scheduler should start
@@ -92,7 +92,7 @@ You can use it in your Component system like so:
 
 #### `with-lock` (`eternity.middleware.with-lock`)
 
-Depends on [Lockjaw](https://github.com/nomnom-insights/nomnom.lockjaw) and Postgres, guarantees that only the lock holder will do the job. Requires a `:lock` component as a dependency.
+Depends on [Lockjaw](https://github.com/nomnom-insights/nomnom.lockjaw) and Postgres, guarantees that only the lock holder will do the job. Requires a `:lock` component as a dependency. You can use [nomnom/utility-belt.sql](https://github.com/nomnom-insights/nomnom.utility-belt.sql) if you need a JDBC connection pool component.
 Example:
 
 ```clojure
@@ -114,7 +114,7 @@ Example:
 
 ```
 
-#### `with-exception-tracker` (`eternity.middleware.with-exception-tracker`)
+#### `with-exception-tracking` (`eternity.middleware.with-exception-tracking`)
 
 Depends on [Caliban](https://github.com/nomnom-insights/nomnom.caliban). Requires `:exception-tracker` component as a dependency.
 
@@ -122,11 +122,11 @@ Depends on [Caliban](https://github.com/nomnom-insights/nomnom.caliban). Require
 ```clojure
 
 {:scheduler-pool (eternity.pool/create)
-  :exception-trakcer (caliban.tracker/create config)
+ :exception-tracker (caliban.tracker/create config)
  :scheduled-thing (component/using
                    (eternity.scheduler
                     {:name "scheduled-thing" :frequency "8h"}
-                    (eternity.middleware.with-exception-tracker/handler
+                    (eternity.middleware.with-exception-tracking/handler
                      ;; if do -stuff throws an exception it will be logged and reported
                      (fn [component]
                        (do-stuff component))))
@@ -149,7 +149,7 @@ Just like in Ring, middlewares can be combined:
                    (eternity.scheduler
                     {:name "scheduled-thing" :frequency "8h"}
                     ;; Stack middlewares:
-                    (eternity.middleware.with-exception-tracker/handler
+                    (eternity.middleware.with-exception-tracking/handler
                      (eternity.middleware.with-lock/handler
                       (fn [component]
                         (do-stuff component)))))

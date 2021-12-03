@@ -35,6 +35,10 @@
 
 
 (def test-atom (atom 0))
+(def system-delay 200)
+(def initial-delay 205)
+(def frequency 250)
+
 
 
 (defn simple-handler [component]
@@ -56,9 +60,9 @@
      :scheduler-pool (pool/create)
      :scheduler (component/using
                   (scheduler/create
-                    {:name         "test"
-                     :frequency     100
-                     :delay 100}
+                    {:name      "test"
+                     :frequency  frequency
+                     :delay      system-delay}
                     handler)
                   [:test-atom :lock :exception-tracker :scheduler-pool])}))
 
@@ -74,12 +78,12 @@
     (let [system (component/start-system (test-system {:handler simple-handler}))]
       ;; initial delay
       (is (= @test-atom 0))
-      (Thread/sleep 102)
+      (Thread/sleep initial-delay)
       (is (= @test-atom 1))
-      (Thread/sleep 100)
+      (Thread/sleep frequency)
       (is (= @test-atom 2))
       (component/stop-system system)
-      (Thread/sleep 100)
+      (Thread/sleep frequency)
       (is (= @test-atom 2)))))
 
 
@@ -89,24 +93,24 @@
     (let [system (component/start-system (test-system {:handler (with-lock/handler simple-handler)
                                                        :always-acquire true}))]
       (is (= @test-atom 0))
-      (Thread/sleep 102)
+      (Thread/sleep initial-delay)
       (is (= @test-atom 1))
-      (Thread/sleep 100)
+      (Thread/sleep frequency)
       (is (= @test-atom 2))
       (component/stop-system system)
-      (Thread/sleep 100)
+      (Thread/sleep frequency)
       (is (= @test-atom 2))))
   (testing "doesnt have a lock and doesnt work"
     (reset! test-atom 0)
     (let [system (component/start-system (test-system {:handler (with-lock/handler simple-handler)
                                                        :always-acquire false}))]
       (is (= @test-atom 0))
-      (Thread/sleep 102)
+      (Thread/sleep initial-delay)
       (is (= @test-atom 0))
-      (Thread/sleep 100)
+      (Thread/sleep frequency)
       (is (= @test-atom 0))
       (component/stop-system system)
-      (Thread/sleep 100)
+      (Thread/sleep frequency)
       (is (= @test-atom 0)))))
 
 
@@ -116,14 +120,14 @@
     (let [system (component/start-system (test-system {:handler (with-exception-tracking/handler
                                                                   exploding-handler)}))]
       (is (= @test-atom 0))
-      (Thread/sleep 100)
+      (Thread/sleep initial-delay)
       (is (= @test-atom 0))
-      (Thread/sleep 100)
+      (Thread/sleep frequency)
       (testing "verify that exception was reported after throwing"
         (is (= "FAIL"
                (.getMessage (-> system :exception-tracker :store deref)))))
       (component/stop-system system)
-      (Thread/sleep 100)
+      (Thread/sleep frequency)
       (testing "verify that no work has been done"
         (is (= @test-atom 0))))))
 
@@ -136,13 +140,13 @@
                                                                     exploding-handler))
                                                        :always-acquire false}))]
       (is (= @test-atom 0))
-      (Thread/sleep 100)
+      (Thread/sleep initial-delay)
       (is (= @test-atom 0))
-      (Thread/sleep 100)
+      (Thread/sleep frequency)
       (testing "verify that no exception was reported because the handler didn't run"
         (is (nil? (-> system :exception-tracker :store deref)))
         (component/stop-system system)
-        (Thread/sleep 100)
+        (Thread/sleep frequency)
         (is (= @test-atom 0)))))
   (testing "uses locks, always runs but throws an exception"
     (is (= @test-atom 0))
@@ -151,11 +155,11 @@
                                                                     exploding-handler))
                                                        :always-acquire true}))]
       (is (= @test-atom 0))
-      (Thread/sleep 100)
+      (Thread/sleep initial-delay)
       (is (= @test-atom 0))
-      (Thread/sleep 100)
+      (Thread/sleep frequency)
       (testing "verify that work was done (because lock was acquired) but handler errord and exception was reported"
         (is (= "FAIL" (.getMessage (-> system :exception-tracker :store deref))))
         (component/stop-system system)
-        (Thread/sleep 100)
+        (Thread/sleep frequency)
         (is (= @test-atom 0))))))

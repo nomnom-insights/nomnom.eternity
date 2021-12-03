@@ -1,5 +1,5 @@
 (ns eternity.scheduler-test
-  (:require [clojure.test :refer :all]
+  (:require [clojure.test :refer [deftest is testing use-fixtures]]
             [eternity.scheduler :as scheduler]
             [eternity.pool :as pool]
             [com.stuartsierra.component :as component]
@@ -7,9 +7,7 @@
             lockjaw.mock
             [clojure.tools.logging :as log]
             [eternity.middleware.with-exception-tracking :as with-exception-tracking]
-            [eternity.middleware.with-lock :as with-lock]
-            [clj-time.coerce :as coerce]
-            [clj-time.core :as time]))
+            [eternity.middleware.with-lock :as with-lock]))
 
 ;; cant use Caliban mock, as we want to inspect the exception thrown
 (defrecord FakeTracker [store]
@@ -19,7 +17,7 @@
   (stop [this]
     this)
   caliban.tracker.protocol/ExceptionTracker
-  (report [this err]
+  (report [_this err]
     (log/error "REPORTING")
     (reset! store err)))
 
@@ -39,7 +37,7 @@
   (let [test-atom (-> component :test-atom)]
     (swap! test-atom inc)))
 
-(defn exploding-handler [component]
+(defn exploding-handler [_]
   (log/info "exploding handler")
   (throw (ex-info "FAIL" {})))
 

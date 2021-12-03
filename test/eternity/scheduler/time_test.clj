@@ -1,9 +1,6 @@
 (ns eternity.scheduler.time-test
-  (:require [clojure.test :refer :all]
+  (:require [clojure.test :refer [deftest is testing]]
             [eternity.scheduler.time :as scheduler.time]
-            [eternity.pool :as pool]
-            [com.stuartsierra.component :as component]
-            [clojure.tools.logging :as log]
             [clj-time.coerce :as coerce]
             [clj-time.core :as time]))
 

@@ -1,6 +1,8 @@
 (ns eternity.middleware.with-exception-tracking
-  (:require [clojure.tools.logging :as log]
-            [caliban.tracker.protocol :as tracker]))
+  (:require
+    [caliban.tracker.protocol :as tracker]
+    [clojure.tools.logging :as log]))
+
 
 (defn handler [scheduled-fn]
   (fn [{:keys [exception-tracker] :as component}]

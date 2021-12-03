@@ -1,10 +1,13 @@
 (ns eternity.scheduler.time
-  (:require [clj-time.coerce :as coerce]
-            [clj-time.core :as time]
-            [clojure.string :as string]))
+  (:require
+    [clj-time.coerce :as coerce]
+    [clj-time.core :as time]
+    [clojure.string :as string]))
+
 
 (defn to-int [s]
   (Integer. ^String s))
+
 
 (defn to-interval
   "Convert string indicating time duration
@@ -25,6 +28,7 @@
         \d (* v 24 60 60 1000)))
     t))
 
+
 (defn- get-closest-minute
   "Given 'mm' return the closest time for mm in future
    e.g now 15:46 and mm=30 => 16:30
@@ -35,6 +39,7 @@
       ;; scheduled start is in future
       scheduled
       (time/plus scheduled (time/hours 1)))))
+
 
 (defn- get-closest-datetime
   "Given 'hh:mm' return the closest time for mm in future
@@ -47,6 +52,7 @@
       scheduled
       (time/plus scheduled (time/days 1)))))
 
+
 (defn calculate-delay
   "Return the number of miliseconds till
    nearest start-at time (can be 'mm' or 'hh:mm').
@@ -58,6 +64,7 @@
                      (get-closest-datetime v1 v2 now)
                      (get-closest-minute v1 now))]
     (max 0 (- (coerce/to-long start-time) (coerce/to-long now)))))
+
 
 (defn get-delay
   "Return delay before scheduler should start"

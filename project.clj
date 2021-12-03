@@ -1,4 +1,4 @@
-(defproject nomnom/eternity "1.0.0"
+(defproject nomnom/eternity "1.0.1-SNAPSHOT-1"
   :description "Scheduled function execution, as a Component. With optional error reporting and and lock support."
   :min-lein-version "2.5.0"
   :url "https://github.com/nomnom-insights/nomnom.eternity"
@@ -10,6 +10,7 @@
             :url "https://opensource.org/licenses/MIT"
             :year 2018
             :key "mit"}
+
   :dependencies [[org.clojure/clojure "1.10.3"]
                  [clj-time "0.15.2"]
                  [overtone/at-at "1.2.0"

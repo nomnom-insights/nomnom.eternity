@@ -3,8 +3,8 @@
   :min-lein-version "2.5.0"
   :url "https://github.com/nomnom-insights/nomnom.eternity"
   :deploy-repositories {"clojars" {:sign-releases false
-                                   :username [:gpg :env/clojars_username]
-                                   :password [:gpg :env/clojars_password]}}
+                                   :username :env/clojars_username
+                                   :password :env/clojars_password}}
 
   :license {:name "MIT License"
             :url "https://opensource.org/licenses/MIT"
@@ -14,10 +14,10 @@
   :dependencies [[org.clojure/clojure "1.10.3"]
                  [clj-time "0.15.2"]
                  [overtone/at-at "1.2.0"
-                  :exclusions [org.clojure/clojure]]]
+                  :exclusions [org.clojure/clojure]]
+                 [com.stuartsierra/component "1.0.0"]
+                 [nomnom/caliban "1.0.3"]
+                 [nomnom/lockjaw "0.1.2"]
+                 [org.clojure/tools.logging "1.1.0"]]
 
-  :profiles {:dev {:dependencies [[com.stuartsierra/component "1.0.0"]
-                                  [nomnom/caliban "1.0.3"]
-                                  [nomnom/lockjaw "0.1.2"]
-                                  [org.clojure/tools.logging "1.1.0"]
-                                  [ch.qos.logback/logback-classic "1.2.7"]]}})
+  :profiles {:dev {:dependencies [[ch.qos.logback/logback-classic "1.2.7"]]}})

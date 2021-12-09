@@ -1,11 +1,10 @@
 (ns eternity.scheduler.time-test
-  (:require [clojure.test :refer :all]
-            [eternity.scheduler.time :as scheduler.time]
-            [eternity.pool :as pool]
-            [com.stuartsierra.component :as component]
-            [clojure.tools.logging :as log]
-            [clj-time.coerce :as coerce]
-            [clj-time.core :as time]))
+  (:require
+    [clj-time.coerce :as coerce]
+    [clj-time.core :as time]
+    [clojure.test :refer [deftest is testing]]
+    [eternity.scheduler.time :as scheduler.time]))
+
 
 (deftest get-delay-test
   (with-redefs [time/now (fn [] (coerce/to-date-time "2016-01-01T12:30:00"))]
@@ -20,6 +19,7 @@
       (is (= (* 10 60 1000) (scheduler.time/get-delay "12:40")))
       ;; 24h without 20 mins
       (is (= (* 1420 60 1000) (scheduler.time/get-delay "12:10"))))))
+
 
 (deftest to-interval-test
   (testing "to-interval"

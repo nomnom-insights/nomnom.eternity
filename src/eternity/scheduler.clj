@@ -1,8 +1,10 @@
 (ns eternity.scheduler
-  (:require [eternity.scheduler.time :as time]
-            [clojure.tools.logging :as log]
-            [overtone.at-at :as at]
-            [com.stuartsierra.component :as component]))
+  (:require
+    [clojure.tools.logging :as log]
+    [com.stuartsierra.component :as component]
+    [eternity.scheduler.time :as time]
+    [overtone.at-at :as at]))
+
 
 (defrecord SchedulerJob [name interval initial-delay schedule-fn scheduler-pool]
   component/Lifecycle
@@ -28,6 +30,7 @@
         (at/stop job)
         (assoc component :job nil))
       component)))
+
 
 (defn create [{:keys [name frequency delay]}
               schedule-fn]

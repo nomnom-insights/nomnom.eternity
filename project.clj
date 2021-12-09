@@ -1,4 +1,4 @@
-(defproject nomnom/eternity "1.0.1-SNAPSHOT-1"
+(defproject nomnom/eternity "1.0.1"
   :description "Scheduled function execution, as a Component. With optional error reporting and and lock support."
   :min-lein-version "2.5.0"
   :url "https://github.com/nomnom-insights/nomnom.eternity"
